@@ -44,5 +44,21 @@ namespace WebAPIpractice.Controllers
             return Ok(equipo);
         }
 
+        [HttpGet]
+        [Route("Find/{filtro}")]
+
+        public IActionResult FindByDescription(string filtro)
+        {
+            equipos? equipo = (from e in _equiposContexto.equipos
+                               where e.descripcion.Contains(filtro)
+                               select e).FirstOrDefault();
+
+            if (equipo == null)
+            {
+                return NotFound();
+            }
+            return Ok(equipo);
+        }
+
     }
 }
