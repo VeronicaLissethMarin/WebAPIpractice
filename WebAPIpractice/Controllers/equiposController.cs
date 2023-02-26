@@ -29,5 +29,20 @@ namespace WebAPIpractice.Controllers
             return Ok(listadoEquipo);
         }
 
+        [HttpGet]
+        [Route("GetById/{id}")]
+        public IActionResult Get(int id)
+        {
+            equipos? equipo = (from e in _equiposContexto.equipos
+                               where e.id_equipos==id
+                               select e).FirstOrDefault();
+
+            if (equipo == null)
+            {
+                return NotFound();
+            }
+            return Ok(equipo);
+        }
+
     }
 }
