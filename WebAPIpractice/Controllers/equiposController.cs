@@ -103,5 +103,26 @@ namespace WebAPIpractice.Controllers
             return Ok(equipoModificar);
         }
 
+
+        [HttpGet]
+        [Route("eliminar/{id}")]
+        public IActionResult EliminarEquipo(int id)
+        {
+            equipos? equipo = (from e in _equiposContexto.equipos
+                                     where e.id_equipos == id
+                                     select e).FirstOrDefault();
+
+            if (equipo == null)
+            {
+                return NotFound();
+            }
+
+            _equiposContexto.equipos.Attach(equipo);
+            _equiposContexto.equipos.Remove(equipo);
+            _equiposContexto.SaveChanges();
+
+            return Ok(equipo);
+        }
+
     }
 }
