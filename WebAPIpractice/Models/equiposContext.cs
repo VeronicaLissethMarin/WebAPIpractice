@@ -25,7 +25,7 @@ namespace WebAPIpractice.Models
 
         public DbSet<reservas> reservas { get; set; }
 
-        public DbSet<tipo_equipo> tipo_equipos { get; set; }
+        public DbSet<tipo_equipo> tipo_equipo { get; set; }
 
         public DbSet<usuarios> usuarios { get; set; }
     }
