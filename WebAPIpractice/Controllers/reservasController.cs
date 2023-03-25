@@ -44,7 +44,7 @@ namespace WebAPIpractice.Controllers
 
         [HttpGet]
         [Route("GetById/{id}")]
-        public IActionResult Get(int id)
+        public IActionResult GetById(int id)
         {
             var Listadoreservas = (from e in _equiposContexto.reservas
                             join u in _equiposContexto.equipos on e.equipo_id equals u.id_equipos
