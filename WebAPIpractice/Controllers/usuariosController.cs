@@ -14,7 +14,81 @@ namespace WebAPIpractice.Controllers
             _equiposContexto = equiposContexto;
         }
 
+        [HttpGet]
+        [Route("GetAll")]
+        public IActionResult GetAllUsuarios()
+        {
+            var listadoUsuarios = (from e in _equiposContexto.reservas
+                                   join u in _equiposContexto.equipos on e.equipo_id equals u.id_equipos
+                                   join us in _equiposContexto.usuarios on e.usuario_id equals us.usuario_id
+                                   join es in _equiposContexto.estados_reservas on e.estado_reserva_id equals es.estado_res_id
+                                   select new
+                                   {
+                                       e,
+                                       u.id_equipos,
+                                       u.nombre,
+                                       u.descripcion,
+                                       us.carnet,
+                                       es.estados
 
+                                   }).ToList();
+
+            if (listadoUsuarios.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(listadoUsuarios);
+        }
+
+        [HttpGet]
+        [Route("GetById/{id}")]
+        public IActionResult Get(int id)
+        {
+            var Listadoreservas = (from e in _equiposContexto.reservas
+                                   join u in _equiposContexto.equipos on e.equipo_id equals u.id_equipos
+                                   join us in _equiposContexto.usuarios on e.usuario_id equals us.usuario_id
+                                   join es in _equiposContexto.estados_reservas on e.estado_reserva_id equals es.estado_res_id
+                                   where e.reserva_id == id
+                                   select new
+                                   {
+                                       e,
+                                       u.id_equipos,
+                                       u.nombre,
+                                       u.descripcion,
+                                       us.carnet,
+                                       es.estados
+                                   }).FirstOrDefault();
+
+            if (Listadoreservas == null)
+            {
+                return NotFound();
+            }
+            return Ok(Listadoreservas);
+        }
+
+        [HttpGet]
+        [Route("Find/{filtro}")]
+
+        public IActionResult Estadoytiempo(int filtro)
+        {
+            var Listadoreservas = (from e in _equiposContexto.reservas
+                                   join us in _equiposContexto.usuarios on e.usuario_id equals us.usuario_id
+                                   join es in _equiposContexto.estados_reservas on e.estado_reserva_id equals es.estado_res_id
+                                   where e.reserva_id == filtro
+                                   select new
+                                   {
+                                       e,
+                                       us.nombre,
+                                       es.estados
+                                   }).FirstOrDefault();
+
+            if (Listadoreservas == null)
+            {
+                return NotFound();
+            }
+            return Ok(Listadoreservas);
+        }
 
         [HttpPost]
         [Route("Add")]
